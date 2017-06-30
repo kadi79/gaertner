@@ -19,10 +19,13 @@ import javax.tools.StandardLocation;
 import javax.tools.ToolProvider;
 
 import org.gaertner.annotationprocessor.util.TeeWriter;
+import org.junit.Ignore;
+import org.junit.Test;
 
 public class ClassDiagramProcessorTest {
 
-//	@Test
+	@Ignore
+	@Test
 	public void runAnnotationProcessor() throws Exception {
 		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 		StringWriter stringWriter = new StringWriter();
