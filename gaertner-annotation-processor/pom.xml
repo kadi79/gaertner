@@ -12,6 +12,11 @@
 			<groupId>org.gaertner</groupId>
 			<artifactId>gaertner-annotations</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.plantuml</groupId>
+			<artifactId>plantuml</artifactId>
+			<version>1.2017.14</version>
+		</dependency>
 
 		<!-- test dependencies -->
 		<dependency>

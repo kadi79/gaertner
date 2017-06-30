@@ -1,4 +1,4 @@
-package org.gaertner.annotationprocessor;
+package org.gaertner.annotationprocessor.util;
 
 import java.io.IOException;
 import java.io.Writer;

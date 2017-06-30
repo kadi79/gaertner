@@ -18,12 +18,11 @@ import javax.tools.StandardJavaFileManager;
 import javax.tools.StandardLocation;
 import javax.tools.ToolProvider;
 
-import org.gaertner.annotations.UmlClassDiagram;
-import org.junit.Test;
+import org.gaertner.annotationprocessor.util.TeeWriter;
 
 public class ClassDiagramProcessorTest {
 
-	@Test
+//	@Test
 	public void runAnnotationProcessor() throws Exception {
 		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 		StringWriter stringWriter = new StringWriter();

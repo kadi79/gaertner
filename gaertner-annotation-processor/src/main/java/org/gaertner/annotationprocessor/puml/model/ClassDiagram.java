@@ -11,7 +11,7 @@ public class ClassDiagram {
 
 	private class ClassWriter {
 		private PrintWriter out;
-		
+
 		public ClassWriter(Writer out) {
 			this.out = (out instanceof PrintWriter)?(PrintWriter)out:new PrintWriter(out);
 		}
@@ -22,17 +22,17 @@ public class ClassDiagram {
 			out.println("}");
 		}
 	}
-	
+
 	private List<Class> classes = new ArrayList<>();
 
 	public void addClass(Class clazz) {
 		classes.add(clazz);
 	}
-	
+
 	public void write(Writer out) {
 		PrintWriter writer = (out instanceof PrintWriter)?(PrintWriter)out:new PrintWriter(out);
 		ClassWriter classWriter = new ClassWriter(writer);
-		
+
 		writer.println("@startuml");
 		boolean first = true;
 		for (Class clazz : classes) {
@@ -40,10 +40,10 @@ public class ClassDiagram {
 			first = false;
 			classWriter.write(clazz);
 		}
-		writer.print("@enduml");
+		writer.println("@enduml");
 		writer.flush();
 	}
-	
+
 	public String toString() {
 		StringWriter out = new StringWriter();
 		write(out);

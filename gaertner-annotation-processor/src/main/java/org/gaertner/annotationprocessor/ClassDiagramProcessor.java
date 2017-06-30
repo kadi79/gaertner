@@ -1,6 +1,8 @@
 package org.gaertner.annotationprocessor;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -24,7 +26,12 @@ import javax.tools.StandardLocation;
 
 import org.gaertner.annotationprocessor.puml.model.Class;
 import org.gaertner.annotationprocessor.puml.model.ClassDiagram;
+import org.gaertner.annotationprocessor.util.TeeWriter;
 import org.gaertner.annotations.UmlClassDiagram;
+
+import net.sourceforge.plantuml.FileFormat;
+import net.sourceforge.plantuml.FileFormatOption;
+import net.sourceforge.plantuml.SourceStringReader;
 
 @SupportedAnnotationTypes({"org.gaertner.annotations.UmlClassDiagram"})
 public class ClassDiagramProcessor extends AbstractProcessor {
@@ -43,26 +50,44 @@ public class ClassDiagramProcessor extends AbstractProcessor {
 
 	private void writeDiagrams() {
 		for (Entry<String, ClassDiagram> entry : classDiagrams.entrySet()) {
-			String filename = entry.getKey() + ".puml";
-			Writer writer = null;
+			String filename = entry.getKey();
+			Writer pumlFileWriter = null;
+			OutputStream svgOutputStreams = null;
 			try {
 				messager.printMessage(Kind.NOTE, "writing Diagram File " + filename);
-				FileObject resource = filer.createResource(StandardLocation.CLASS_OUTPUT, "puml", filename);
-				messager.printMessage(Kind.NOTE, "writing File " + resource.toUri());
-				writer = resource.openWriter();
-				entry.getValue().write(writer);
-				writer.flush();
+				FileObject pumlResource = filer.createResource(StandardLocation.CLASS_OUTPUT, "puml", filename + ".puml");
+				FileObject svgResource = filer.createResource(StandardLocation.CLASS_OUTPUT, "puml", filename + ".svg");
+
+				StringWriter stringWriter = new StringWriter();
+				pumlFileWriter = new TeeWriter(stringWriter, pumlResource.openWriter());
+
+				entry.getValue().write(pumlFileWriter);
+				pumlFileWriter.flush();
+
+				SourceStringReader reader = new SourceStringReader(stringWriter.toString());
+				svgOutputStreams = svgResource.openOutputStream();
+				reader.outputImage(svgOutputStreams, new FileFormatOption(FileFormat.SVG));
+
 			} catch (IOException e) {
 				messager.printMessage(Kind.ERROR, "Error creating " + filename + ":\n" + e.getMessage());
 			} finally {
-				if (writer != null) {
+				if (pumlFileWriter != null) {
 					try {
-						writer.close();
+						pumlFileWriter.close();
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					writer = null;
+					pumlFileWriter = null;
+				}
+				if (svgOutputStreams != null) {
+					try {
+						svgOutputStreams.close();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					svgOutputStreams = null;
 				}
 			}
 		}
@@ -101,14 +126,14 @@ public class ClassDiagramProcessor extends AbstractProcessor {
 		messager  = processingEnv.getMessager();
 		filer  = processingEnv.getFiler();
 	}
-	
+
 	@Override
 	public Set<String> getSupportedAnnotationTypes() {
 		Set<String> annotations = new HashSet<>();
 		annotations.add(UmlClassDiagram.class.getCanonicalName());
 		return annotations ;
 	}
-	
+
 	@Override
 	public SourceVersion getSupportedSourceVersion() {
 		return SourceVersion.latestSupported();
