@@ -6,6 +6,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -20,12 +21,14 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
 import javax.tools.Diagnostic.Kind;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 
 import org.gaertner.annotationprocessor.puml.model.Class;
 import org.gaertner.annotationprocessor.puml.model.ClassDiagram;
+import org.gaertner.annotationprocessor.puml.model.Field;
 import org.gaertner.annotationprocessor.util.TeeWriter;
 import org.gaertner.annotations.UmlClassDiagram;
 
@@ -106,6 +109,14 @@ public class ClassDiagramProcessor extends AbstractProcessor {
 	private Class createClassElement(TypeElement typeElement) {
 		Name qualifiedName = typeElement.getQualifiedName();
 		Class clazz = new Class(qualifiedName.toString());
+		List<? extends Element> elements = typeElement.getEnclosedElements();
+		for (Element element : elements) {
+			if (element instanceof VariableElement) {
+				VariableElement variable = (VariableElement) element;
+				Field field = new Field(variable.asType().toString(), variable.getSimpleName().toString());
+				clazz.addField(field);
+			}
+		}
 		return clazz;
 	}
 

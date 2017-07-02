@@ -1,0 +1,9 @@
+package org.gaertner.test;
+
+import org.gaertner.annotations.UmlClassDiagram;
+
+@UmlClassDiagram(filename="test")
+public class TestClass2 {
+	private EmptyClass g;
+
+}
