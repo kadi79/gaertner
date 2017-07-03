@@ -170,8 +170,19 @@ public class ClassDiagram {
 		}
 	}
 
+	private class SupertypeScanner extends RelationScanner {
+		public SupertypeScanner() {
+			super(RelationType.EXTENSION, true);
+		}
+
+		@Override
+		protected List<String> extractRelationTargetKeys(Class clazz) {
+			return Arrays.asList(clazz.getExtendsType());
+		}
+	}
+
 	private SortedSet<Class> classes = new TreeSet<>();
-	private List<RelationScanner> relationScanners = Arrays.asList(new CompositionScanner());
+	private List<RelationScanner> relationScanners = Arrays.asList(new SupertypeScanner(), new CompositionScanner());
 	
 
 	public void addClass(Class clazz) {

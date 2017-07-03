@@ -6,6 +6,8 @@ import java.util.List;
 public class Class implements Comparable<Class> {
 
 	private String fqdn;
+	
+	private String extendsType;
 
 	private List<Field> fields = new ArrayList<>();
 	
@@ -55,5 +57,13 @@ public class Class implements Comparable<Class> {
 	@Override
 	public int compareTo(Class o) {
 		return fqdn.compareTo(o.fqdn);
+	}
+
+	public String getExtendsType() {
+		return extendsType;
+	}
+
+	public void setExtendsType(String extendsType) {
+		this.extendsType = extendsType;
 	}
 }

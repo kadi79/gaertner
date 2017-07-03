@@ -22,6 +22,8 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic.Kind;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
@@ -117,6 +119,15 @@ public class ClassDiagramProcessor extends AbstractProcessor {
 				clazz.addField(field);
 			}
 		}
+		
+		TypeMirror superclass = typeElement.getSuperclass();
+		if (superclass instanceof DeclaredType) {
+			DeclaredType declared = (DeclaredType) superclass;
+			TypeElement element = (TypeElement) declared.asElement();
+			Name qualifiedSupertypeName = element.getQualifiedName();
+			clazz.setExtendsType(qualifiedSupertypeName.toString());
+		}
+		
 		return clazz;
 	}
 
