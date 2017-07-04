@@ -63,7 +63,7 @@ public class ClassDiagramTest {
 				+ "}" + nl  //
 				+ nl  //
 				+ "class org.gaertner.Class2 {" + nl  //
-				+ "\torg.gaertner.Class1 ref" + nl //
+				+ "\tClass1 ref" + nl //
 				+ "}" + nl  //
 				+ "@enduml" + nl , //
 				stringWriter.toString());
@@ -88,7 +88,7 @@ public class ClassDiagramTest {
 				+ "}" + nl  //
 				+ nl  //
 				+ "class org.gaertner.Class2 {" + nl  //
-				+ "\torg.gaertner.Class1 ref" + nl //
+				+ "\tClass1 ref" + nl //
 				+ "}" + nl  //
 				+ "@enduml" + nl , //
 				stringWriter.toString());

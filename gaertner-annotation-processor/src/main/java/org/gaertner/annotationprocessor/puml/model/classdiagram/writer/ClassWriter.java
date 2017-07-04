@@ -18,7 +18,7 @@ public class ClassWriter {
 		out.print(clazz.getFqdn());
 		out.println(" {");
 		for (Field field : clazz.getFields()) {
-			out.println("\t" + field.getType() + " " + field.getName());
+			out.println("\t" + field.getSimpleType() + " " + field.getName());
 		}
 		out.println("}");
 	}
