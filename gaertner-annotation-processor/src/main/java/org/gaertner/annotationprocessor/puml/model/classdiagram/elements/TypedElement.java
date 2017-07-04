@@ -1,4 +1,4 @@
-package org.gaertner.annotationprocessor.puml.model;
+package org.gaertner.annotationprocessor.puml.model.classdiagram.elements;
 
 public class TypedElement {
 

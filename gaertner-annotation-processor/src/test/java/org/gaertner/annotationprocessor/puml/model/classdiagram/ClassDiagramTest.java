@@ -1,7 +1,9 @@
-package org.gaertner.annotationprocessor.puml.model;
+package org.gaertner.annotationprocessor.puml.model.classdiagram;
 
 import java.io.StringWriter;
 
+import org.gaertner.annotationprocessor.puml.model.classdiagram.elements.Field;
+import org.gaertner.annotationprocessor.puml.model.classdiagram.elements.Class;
 import org.junit.Assert;
 import org.junit.Test;
 

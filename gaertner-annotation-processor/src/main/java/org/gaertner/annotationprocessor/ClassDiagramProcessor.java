@@ -28,9 +28,9 @@ import javax.tools.Diagnostic.Kind;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 
-import org.gaertner.annotationprocessor.puml.model.Class;
-import org.gaertner.annotationprocessor.puml.model.ClassDiagram;
-import org.gaertner.annotationprocessor.puml.model.Field;
+import org.gaertner.annotationprocessor.puml.model.classdiagram.ClassDiagram;
+import org.gaertner.annotationprocessor.puml.model.classdiagram.elements.Class;
+import org.gaertner.annotationprocessor.puml.model.classdiagram.elements.Field;
 import org.gaertner.annotationprocessor.util.TeeWriter;
 import org.gaertner.annotations.UmlClassDiagram;
 
