@@ -60,8 +60,8 @@ public class ClassDiagramProcessor extends AbstractProcessor {
 			OutputStream svgOutputStreams = null;
 			try {
 				messager.printMessage(Kind.NOTE, "writing Diagram File " + filename);
-				FileObject pumlResource = filer.createResource(StandardLocation.CLASS_OUTPUT, "puml", filename + ".puml");
-				FileObject svgResource = filer.createResource(StandardLocation.CLASS_OUTPUT, "puml", filename + ".svg");
+				FileObject pumlResource = filer.createResource(StandardLocation.SOURCE_OUTPUT, "", filename + ".puml");
+				FileObject svgResource = filer.createResource(StandardLocation.SOURCE_OUTPUT, "", filename + ".svg");
 
 				StringWriter stringWriter = new StringWriter();
 				pumlFileWriter = new TeeWriter(stringWriter, pumlResource.openWriter());
