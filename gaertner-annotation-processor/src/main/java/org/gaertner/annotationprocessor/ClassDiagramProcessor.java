@@ -19,6 +19,7 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.Modifier;
 import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
@@ -31,6 +32,7 @@ import javax.tools.StandardLocation;
 import org.gaertner.annotationprocessor.puml.model.classdiagram.ClassDiagram;
 import org.gaertner.annotationprocessor.puml.model.classdiagram.elements.Class;
 import org.gaertner.annotationprocessor.puml.model.classdiagram.elements.Field;
+import org.gaertner.annotationprocessor.puml.model.classdiagram.elements.Visibility;
 import org.gaertner.annotationprocessor.util.TeeWriter;
 import org.gaertner.annotations.UmlClassDiagram;
 
@@ -115,7 +117,25 @@ public class ClassDiagramProcessor extends AbstractProcessor {
 		for (Element element : elements) {
 			if (element instanceof VariableElement) {
 				VariableElement variable = (VariableElement) element;
-				Field field = new Field(variable.asType().toString(), variable.getSimpleName().toString());
+				Set<Modifier> modifiers = variable.getModifiers();
+				Visibility visibility = null;
+				for (Modifier modifier : modifiers) {
+					switch (modifier) {
+					case PUBLIC:
+						visibility = Visibility.PUBLIC;
+						break;
+					case PROTECTED:
+						visibility = Visibility.PROTECTED;
+						break;
+					case PRIVATE:
+						visibility = Visibility.PRIVATE;
+						break;
+					default:
+						break;
+					}
+				}
+				if (visibility == null) visibility = Visibility.PACKAGE_PRIVATE;
+				Field field = new Field(variable.asType().toString(), variable.getSimpleName().toString(), visibility);
 				clazz.addField(field);
 			}
 		}

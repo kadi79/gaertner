@@ -3,6 +3,7 @@ package org.gaertner.annotationprocessor.puml.model.classdiagram;
 import java.io.StringWriter;
 
 import org.gaertner.annotationprocessor.puml.model.classdiagram.elements.Field;
+import org.gaertner.annotationprocessor.puml.model.classdiagram.elements.Visibility;
 import org.gaertner.annotationprocessor.puml.model.classdiagram.elements.Class;
 import org.junit.Assert;
 import org.junit.Test;
@@ -50,7 +51,7 @@ public class ClassDiagramTest {
 		Class clazz1 = new Class("org.gaertner.Class1");
 		classDiagram.addClass(clazz1);
 		Class clazz2 = new Class("org.gaertner.Class2");
-		clazz2.addField(new Field(clazz1.getFqdn(), "ref"));
+		clazz2.addField(new Field(clazz1.getFqdn(), "ref", Visibility.PRIVATE));
 		classDiagram.addClass(clazz2);
 		StringWriter stringWriter = new StringWriter();
 		classDiagram.write(stringWriter);
@@ -63,7 +64,7 @@ public class ClassDiagramTest {
 				+ "}" + nl  //
 				+ nl  //
 				+ "class org.gaertner.Class2 {" + nl  //
-				+ "\tClass1 ref" + nl //
+				+ "\t-Class1 ref" + nl //
 				+ "}" + nl  //
 				+ "@enduml" + nl , //
 				stringWriter.toString());
@@ -74,7 +75,7 @@ public class ClassDiagramTest {
 		ClassDiagram classDiagram = new ClassDiagram();
 		Class clazz1 = new Class("org.gaertner.Class1");
 		Class clazz2 = new Class("org.gaertner.Class2");
-		clazz2.addField(new Field(clazz1.getFqdn(), "ref"));
+		clazz2.addField(new Field(clazz1.getFqdn(), "ref", Visibility.PRIVATE));
 		classDiagram.addClass(clazz2);
 		classDiagram.addClass(clazz1);
 		StringWriter stringWriter = new StringWriter();
@@ -88,7 +89,7 @@ public class ClassDiagramTest {
 				+ "}" + nl  //
 				+ nl  //
 				+ "class org.gaertner.Class2 {" + nl  //
-				+ "\tClass1 ref" + nl //
+				+ "\t-Class1 ref" + nl //
 				+ "}" + nl  //
 				+ "@enduml" + nl , //
 				stringWriter.toString());
