@@ -19,6 +19,8 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
@@ -32,6 +34,7 @@ import javax.tools.StandardLocation;
 import org.gaertner.annotationprocessor.puml.model.classdiagram.ClassDiagram;
 import org.gaertner.annotationprocessor.puml.model.classdiagram.elements.Class;
 import org.gaertner.annotationprocessor.puml.model.classdiagram.elements.Field;
+import org.gaertner.annotationprocessor.puml.model.classdiagram.elements.Method;
 import org.gaertner.annotationprocessor.puml.model.classdiagram.elements.Visibility;
 import org.gaertner.annotationprocessor.util.TeeWriter;
 import org.gaertner.annotations.UmlClassDiagram;
@@ -82,8 +85,7 @@ public class ClassDiagramProcessor extends AbstractProcessor {
 					try {
 						pumlFileWriter.close();
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						throw new IllegalStateException("Error closing Writer", e);
 					}
 					pumlFileWriter = null;
 				}
@@ -91,8 +93,7 @@ public class ClassDiagramProcessor extends AbstractProcessor {
 					try {
 						svgOutputStreams.close();
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						throw new IllegalStateException("Error closing Stream", e);
 					}
 					svgOutputStreams = null;
 				}
@@ -115,28 +116,21 @@ public class ClassDiagramProcessor extends AbstractProcessor {
 		Class clazz = new Class(qualifiedName.toString());
 		List<? extends Element> elements = typeElement.getEnclosedElements();
 		for (Element element : elements) {
-			if (element instanceof VariableElement) {
+			ElementKind kind = element.getKind();
+			switch (kind) {
+			case FIELD:
 				VariableElement variable = (VariableElement) element;
-				Set<Modifier> modifiers = variable.getModifiers();
-				Visibility visibility = null;
-				for (Modifier modifier : modifiers) {
-					switch (modifier) {
-					case PUBLIC:
-						visibility = Visibility.PUBLIC;
-						break;
-					case PROTECTED:
-						visibility = Visibility.PROTECTED;
-						break;
-					case PRIVATE:
-						visibility = Visibility.PRIVATE;
-						break;
-					default:
-						break;
-					}
-				}
-				if (visibility == null) visibility = Visibility.PACKAGE_PRIVATE;
-				Field field = new Field(variable.asType().toString(), variable.getSimpleName().toString(), visibility);
+				Field field = new Field(variable.asType().toString(), variable.getSimpleName().toString(), mapToVisibility(variable.getModifiers()));
 				clazz.addField(field);
+				break;
+			case METHOD:
+				ExecutableElement executable = (ExecutableElement) element;
+				Method method = new Method(executable.asType().toString(), executable.getSimpleName().toString(), mapToVisibility(executable.getModifiers()));
+				clazz.addMethod(method);
+				break;
+
+			default:
+				break;
 			}
 		}
 		
@@ -149,6 +143,22 @@ public class ClassDiagramProcessor extends AbstractProcessor {
 		}
 		
 		return clazz;
+	}
+
+	private Visibility mapToVisibility(Set<Modifier> modifiers) {
+		for (Modifier modifier : modifiers) {
+			switch (modifier) {
+			case PUBLIC:
+				return Visibility.PUBLIC;
+			case PROTECTED:
+				return Visibility.PROTECTED;
+			case PRIVATE:
+				return Visibility.PRIVATE;
+			default:
+				break;
+			}
+		}
+		return Visibility.PACKAGE_PRIVATE;
 	}
 
 	private ClassDiagram getOrCreateClassDiagram(TypeElement typeElement) {

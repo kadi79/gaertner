@@ -11,6 +11,8 @@ public class Class implements Comparable<Class> {
 
 	private List<Field> fields = new ArrayList<>();
 	
+	private List<Method> methods = new ArrayList<>();
+	
 	public Class(String fqdn) {
 		super();
 		this.fqdn = fqdn;
@@ -27,6 +29,15 @@ public class Class implements Comparable<Class> {
 	
 	public List<Field> getFields() {
 		return fields;
+	}
+
+	public void addMethod(Method method) {
+		methods.add(method);
+		method.setEnclosingElement(this);
+	}
+	
+	public List<Method> getMethods() {
+		return methods;
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import java.io.Writer;
 
 import org.gaertner.annotationprocessor.puml.model.classdiagram.elements.Class;
 import org.gaertner.annotationprocessor.puml.model.classdiagram.elements.Field;
+import org.gaertner.annotationprocessor.puml.model.classdiagram.elements.Method;
 
 public class ClassWriter {
 	private PrintWriter out;
@@ -19,6 +20,9 @@ public class ClassWriter {
 		out.println(" {");
 		for (Field field : clazz.getFields()) {
 			out.println("\t" + field.getVisibility().getPresentation() + field.getSimpleType() + " " + field.getName());
+		}
+		for (Method method : clazz.getMethods()) {
+			out.println("\t" + method.getVisibility().getPresentation() + method.getSimpleType() + " " + method.getName() + "()");
 		}
 		out.println("}");
 	}
