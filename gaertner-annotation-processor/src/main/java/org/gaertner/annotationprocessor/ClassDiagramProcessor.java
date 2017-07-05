@@ -39,13 +39,14 @@ import org.gaertner.annotationprocessor.puml.model.classdiagram.elements.Field;
 import org.gaertner.annotationprocessor.puml.model.classdiagram.elements.Method;
 import org.gaertner.annotationprocessor.util.TeeWriter;
 import org.gaertner.annotations.UmlClassDiagram;
+import org.gaertner.annotations.UmlClassDiagrams;
 import org.gaertner.annotations.Visibility;
 
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.SourceStringReader;
 
-@SupportedAnnotationTypes({"org.gaertner.annotations.UmlClassDiagram"})
+@SupportedAnnotationTypes({"org.gaertner.annotations.UmlClassDiagram, org.gaertner.annotations.UmlClassDiagrams"})
 public class ClassDiagramProcessor extends AbstractProcessor {
 
 	private Messager messager = null;
@@ -105,17 +106,27 @@ public class ClassDiagramProcessor extends AbstractProcessor {
 
 	private void buildDiagramModels(RoundEnvironment roundEnv) {
 		for (Element element : roundEnv.getElementsAnnotatedWith(UmlClassDiagram.class)) {
+			UmlClassDiagram annotation = element.getAnnotation(UmlClassDiagram.class);
 			if (element instanceof TypeElement) {
 				TypeElement typeElement = (TypeElement) element;
-				ClassDiagram diagram = getOrCreateClassDiagram(typeElement);
-				diagram.addClass(createClassElement(typeElement));
+				ClassDiagram diagram = getOrCreateClassDiagram(typeElement, annotation);
+				diagram.addClass(createClassElement(typeElement, annotation));
+			}
+		}
+		for (Element element : roundEnv.getElementsAnnotatedWith(UmlClassDiagrams.class)) {
+			UmlClassDiagram[] annotations = element.getAnnotationsByType(UmlClassDiagram.class);
+			for (UmlClassDiagram annotation : annotations) {
+				if (element instanceof TypeElement) {
+					TypeElement typeElement = (TypeElement) element;
+					ClassDiagram diagram = getOrCreateClassDiagram(typeElement, annotation);
+					diagram.addClass(createClassElement(typeElement, annotation));
+				}
 			}
 		}
 	}
 
-	private Class createClassElement(TypeElement typeElement) {
+	private Class createClassElement(TypeElement typeElement, UmlClassDiagram annotation) {
 		Name qualifiedName = typeElement.getQualifiedName();
-		UmlClassDiagram annotation = typeElement.getAnnotation(UmlClassDiagram.class);
 		Class clazz = new Class(qualifiedName.toString(), asList(annotation.fields()), asList(annotation.methods()));
 		List<? extends Element> elements = typeElement.getEnclosedElements();
 		for (Element element : elements) {
@@ -164,8 +175,7 @@ public class ClassDiagramProcessor extends AbstractProcessor {
 		return Visibility.PACKAGE_PRIVATE;
 	}
 
-	private ClassDiagram getOrCreateClassDiagram(TypeElement typeElement) {
-		UmlClassDiagram annotation = typeElement.getAnnotation(UmlClassDiagram.class);
+	private ClassDiagram getOrCreateClassDiagram(TypeElement typeElement, UmlClassDiagram annotation) {
 		String filename = annotation.filename();
 		ClassDiagram classDiagram = classDiagrams.get(filename);
 		if (classDiagram == null) {
@@ -186,6 +196,7 @@ public class ClassDiagramProcessor extends AbstractProcessor {
 	public Set<String> getSupportedAnnotationTypes() {
 		Set<String> annotations = new HashSet<>();
 		annotations.add(UmlClassDiagram.class.getCanonicalName());
+		annotations.add(UmlClassDiagrams.class.getCanonicalName());
 		return annotations ;
 	}
 
