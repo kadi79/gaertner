@@ -1,5 +1,7 @@
 package org.gaertner.annotationprocessor.puml.model.classdiagram.elements;
 
+import org.gaertner.annotations.Visibility;
+
 public class Field extends TypedElement {
 
 	private String name;

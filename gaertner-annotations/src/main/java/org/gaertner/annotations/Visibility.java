@@ -1,4 +1,4 @@
-package org.gaertner.annotationprocessor.puml.model.classdiagram.elements;
+package org.gaertner.annotations;
 
 public enum Visibility {
 	PRIVATE("-"),

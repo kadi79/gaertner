@@ -1,5 +1,7 @@
 package org.gaertner.annotationprocessor;
 
+import static java.util.Arrays.asList;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
@@ -35,9 +37,9 @@ import org.gaertner.annotationprocessor.puml.model.classdiagram.ClassDiagram;
 import org.gaertner.annotationprocessor.puml.model.classdiagram.elements.Class;
 import org.gaertner.annotationprocessor.puml.model.classdiagram.elements.Field;
 import org.gaertner.annotationprocessor.puml.model.classdiagram.elements.Method;
-import org.gaertner.annotationprocessor.puml.model.classdiagram.elements.Visibility;
 import org.gaertner.annotationprocessor.util.TeeWriter;
 import org.gaertner.annotations.UmlClassDiagram;
+import org.gaertner.annotations.Visibility;
 
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
@@ -113,7 +115,8 @@ public class ClassDiagramProcessor extends AbstractProcessor {
 
 	private Class createClassElement(TypeElement typeElement) {
 		Name qualifiedName = typeElement.getQualifiedName();
-		Class clazz = new Class(qualifiedName.toString());
+		UmlClassDiagram annotation = typeElement.getAnnotation(UmlClassDiagram.class);
+		Class clazz = new Class(qualifiedName.toString(), asList(annotation.fields()), asList(annotation.methods()));
 		List<? extends Element> elements = typeElement.getEnclosedElements();
 		for (Element element : elements) {
 			ElementKind kind = element.getKind();

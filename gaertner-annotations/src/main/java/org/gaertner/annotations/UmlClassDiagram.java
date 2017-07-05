@@ -10,4 +10,6 @@ import java.lang.annotation.Target;
 @Target({TYPE})
 public @interface UmlClassDiagram {
 	String filename();
+	Visibility[] fields() default {Visibility.PUBLIC, Visibility.PACKAGE_PRIVATE, Visibility.PROTECTED, Visibility.PRIVATE};
+	Visibility[] methods() default {Visibility.PUBLIC, Visibility.PACKAGE_PRIVATE};
 }

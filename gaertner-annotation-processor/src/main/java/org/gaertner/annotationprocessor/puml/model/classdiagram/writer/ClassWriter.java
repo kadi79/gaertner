@@ -18,10 +18,10 @@ public class ClassWriter {
 		out.print("class ");
 		out.print(clazz.getFqdn());
 		out.println(" {");
-		for (Field field : clazz.getFields()) {
+		for (Field field : clazz.getDisplayFields()) {
 			out.println("\t" + field.getVisibility().getPresentation() + field.getSimpleType() + " " + field.getName());
 		}
-		for (Method method : clazz.getMethods()) {
+		for (Method method : clazz.getDisplayMethods()) {
 			out.println("\t" + method.getVisibility().getPresentation() + method.getSimpleType() + " " + method.getName() + "()");
 		}
 		out.println("}");

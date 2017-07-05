@@ -3,7 +3,7 @@ package org.gaertner.annotationprocessor.puml.model.classdiagram;
 import java.io.StringWriter;
 
 import org.gaertner.annotationprocessor.puml.model.classdiagram.elements.Field;
-import org.gaertner.annotationprocessor.puml.model.classdiagram.elements.Visibility;
+import org.gaertner.annotations.Visibility;
 import org.gaertner.annotationprocessor.puml.model.classdiagram.elements.Class;
 import org.junit.Assert;
 import org.junit.Test;
@@ -14,7 +14,7 @@ public class ClassDiagramTest {
 	@Test
 	public void singleEmptyClass() throws Exception {
 		ClassDiagram classDiagram = new ClassDiagram();
-		classDiagram.addClass(new Class("org.gaertner.Class1"));
+		classDiagram.addClass(new Class("org.gaertner.Class1", Class.DEFAULT_FIELDS_TO_DISPLAY, Class.DEFAULT_METHODS_TO_DISPLAY));
 		StringWriter stringWriter = new StringWriter();
 		classDiagram.write(stringWriter);
 
@@ -29,8 +29,8 @@ public class ClassDiagramTest {
 	@Test
 	public void twoEmptyClasses() throws Exception {
 		ClassDiagram classDiagram = new ClassDiagram();
-		classDiagram.addClass(new Class("org.gaertner.Class1"));
-		classDiagram.addClass(new Class("org.gaertner.Class2"));
+		classDiagram.addClass(new Class("org.gaertner.Class1", Class.DEFAULT_FIELDS_TO_DISPLAY, Class.DEFAULT_METHODS_TO_DISPLAY));
+		classDiagram.addClass(new Class("org.gaertner.Class2", Class.DEFAULT_FIELDS_TO_DISPLAY, Class.DEFAULT_METHODS_TO_DISPLAY));
 		StringWriter stringWriter = new StringWriter();
 		classDiagram.write(stringWriter);
 
@@ -48,9 +48,9 @@ public class ClassDiagramTest {
 	@Test
 	public void composition() throws Exception {
 		ClassDiagram classDiagram = new ClassDiagram();
-		Class clazz1 = new Class("org.gaertner.Class1");
+		Class clazz1 = new Class("org.gaertner.Class1", Class.DEFAULT_FIELDS_TO_DISPLAY, Class.DEFAULT_METHODS_TO_DISPLAY);
 		classDiagram.addClass(clazz1);
-		Class clazz2 = new Class("org.gaertner.Class2");
+		Class clazz2 = new Class("org.gaertner.Class2", Class.DEFAULT_FIELDS_TO_DISPLAY, Class.DEFAULT_METHODS_TO_DISPLAY);
 		clazz2.addField(new Field(clazz1.getFqdn(), "ref", Visibility.PRIVATE));
 		classDiagram.addClass(clazz2);
 		StringWriter stringWriter = new StringWriter();
@@ -73,8 +73,8 @@ public class ClassDiagramTest {
 	@Test
 	public void compositionReverseOrder() throws Exception {
 		ClassDiagram classDiagram = new ClassDiagram();
-		Class clazz1 = new Class("org.gaertner.Class1");
-		Class clazz2 = new Class("org.gaertner.Class2");
+		Class clazz1 = new Class("org.gaertner.Class1", Class.DEFAULT_FIELDS_TO_DISPLAY, Class.DEFAULT_METHODS_TO_DISPLAY);
+		Class clazz2 = new Class("org.gaertner.Class2", Class.DEFAULT_FIELDS_TO_DISPLAY, Class.DEFAULT_METHODS_TO_DISPLAY);
 		clazz2.addField(new Field(clazz1.getFqdn(), "ref", Visibility.PRIVATE));
 		classDiagram.addClass(clazz2);
 		classDiagram.addClass(clazz1);
