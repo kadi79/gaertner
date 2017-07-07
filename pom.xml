@@ -1,10 +1,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
 	<groupId>com.github.kadi79.gaertner</groupId>
 	<artifactId>gaertner</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
+
+	<name>Gaertner</name>
+	<url>https://github.com/dirk-kaspar/gaertner</url>
+
+	<description>Project Gärtner is set of Annotations and Annotationprocessors to simplify the generation of UML Diagrams from Java Code.
+It generates .puml Files further processed by PlantUml and generates diagrams in SVG format.</description>
+
+	<scm>
+		<url>https://github.com/dirk-kaspar/gaertner.git</url>
+	</scm>
+
 	<modules>
 		<module>gaertner-annotations</module>
 		<module>gaertner-examples</module>
@@ -23,12 +35,23 @@
 		<gaertner.version>${project.version}</gaertner.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-	<name>Gaertner</name>
-	<url>https://github.com/dirk-kaspar/gaertner</url>
-	<description>Project Gärtner is set of Annotations and Annotationprocessors to simplify the generation of UML Diagrams from Java Code.
-It generates .puml Files further processed by PlantUml and generates diagrams in SVG format.</description>
-	<scm>
-		<url>https://github.com/dirk-kaspar/gaertner.git</url>
-	</scm>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.10.4</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>
