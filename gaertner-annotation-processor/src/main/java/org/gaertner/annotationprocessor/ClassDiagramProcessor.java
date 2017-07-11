@@ -33,6 +33,7 @@ import javax.tools.Diagnostic.Kind;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 
+import org.gaertner.annotationprocessor.puml.model.DiagramFactory;
 import org.gaertner.annotationprocessor.puml.model.classdiagram.ClassDiagram;
 import org.gaertner.annotationprocessor.puml.model.classdiagram.elements.Class;
 import org.gaertner.annotationprocessor.puml.model.classdiagram.elements.Field;
@@ -52,6 +53,15 @@ public class ClassDiagramProcessor extends AbstractProcessor {
 	private Messager messager = null;
 	private Map<String, ClassDiagram> classDiagrams = new HashMap<>();
 	private Filer filer = null;
+	private DiagramFactory diagramFactory;
+	
+	public ClassDiagramProcessor(DiagramFactory diagramFactory) {
+		this.diagramFactory = diagramFactory;
+	}
+	
+	public ClassDiagramProcessor() {
+		this.diagramFactory = DiagramFactory.getInstance();
+	}
 
 	@Override
 	public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
@@ -179,7 +189,7 @@ public class ClassDiagramProcessor extends AbstractProcessor {
 		String filename = annotation.filename();
 		ClassDiagram classDiagram = classDiagrams.get(filename);
 		if (classDiagram == null) {
-			classDiagram = new ClassDiagram();
+			classDiagram = diagramFactory.createClassDiagram();
 			classDiagrams.put(filename, classDiagram);
 		}
 		return classDiagram;
