@@ -2,60 +2,64 @@ package org.gaertner.annotationprocessor;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.nio.file.FileVisitResult;
-import java.nio.file.FileVisitor;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.nio.file.attribute.FileAttribute;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.tools.JavaCompiler;
 import javax.tools.JavaCompiler.CompilationTask;
-import javax.tools.JavaFileManager.Location;
-import javax.tools.JavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.StandardLocation;
 import javax.tools.ToolProvider;
 
-import org.gaertner.annotationprocessor.util.TeeWriter;
+import org.hamcrest.io.FileMatchers;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 public class ClassDiagramProcessorTest {
 
-	@Test
-	public void testName() throws Exception {
-		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-		StringWriter stringWriter = new StringWriter();
-		OutputStreamWriter outputStreamWriter = new OutputStreamWriter(System.out, "UTF-8");
-		Writer writer = new TeeWriter(outputStreamWriter, stringWriter);
-		Iterable<? extends JavaFileObject> classFiles = Arrays.asList(new StringSourceJavaFileObject("org.gaertner.test.EmptyClass", "package org.gaertner.test;\n" + 
-				"\n" + 
-				"import org.gaertner.annotations.UmlClassDiagram;\n" + 
-				"\n" + 
-				"@UmlClassDiagram(filename=\"test_detail\")\n" + 
-				"@UmlClassDiagram(filename=\"test\", fields= {}, methods={})\n" + 
-				"public class EmptyClass {\n" + 
-				"	int g;\n" + 
-				"\n" + 
-				"}\n" + 
-				""));
-		StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
-		Path targetDir = Files.createTempDirectory("target");
-		File classTarget = new File(targetDir.toFile(), "classes");
-		Files.createDirectory(classTarget.toPath());
-		File generatedSourcesTarget = new File(targetDir.toFile(), "generatedSources");
-		Files.createDirectory(generatedSourcesTarget.toPath());
-		fileManager.setLocation(StandardLocation.CLASS_OUTPUT, Arrays.asList(classTarget));
-		fileManager.setLocation(StandardLocation.SOURCE_OUTPUT, Arrays.asList(generatedSourcesTarget));
-		CompilationTask task = compiler.getTask(writer, fileManager, null, null, null, classFiles);
-		task.setProcessors(Arrays.asList(new ClassDiagramProcessor()));
-		task.call();
-		
+	private JavaCompiler compiler;
+	private StandardJavaFileManager fileManager;
+	private Path targetDir;
+	private File classTargetDir;
+	private File generatedSourcesTargetDir;
+//	private Writer consoleWriter;
+
+	@Before
+	public void setup() throws IOException {
+		compiler = ToolProvider.getSystemJavaCompiler();
+		setupFileManager();
+//		setupConsoleOutput();
+	}
+
+//	private void setupConsoleOutput() throws UnsupportedEncodingException {
+//		StringWriter stringWriter = new StringWriter();
+//		OutputStreamWriter outputStreamWriter = new OutputStreamWriter(System.out, "UTF-8");
+//		consoleWriter = new TeeWriter(outputStreamWriter, stringWriter);
+//	}
+
+	private void setupFileManager() throws IOException {
+		targetDir = Files.createTempDirectory("target");
+
+		classTargetDir = new File(targetDir.toFile(), "classes");
+		Files.createDirectory(classTargetDir.toPath());
+
+		generatedSourcesTargetDir = new File(targetDir.toFile(), "generatedSources");
+		Files.createDirectory(generatedSourcesTargetDir.toPath());
+
+		fileManager = compiler.getStandardFileManager(null, null, null);
+		fileManager.setLocation(StandardLocation.CLASS_OUTPUT, Arrays.asList(classTargetDir));
+		fileManager.setLocation(StandardLocation.SOURCE_OUTPUT, Arrays.asList(generatedSourcesTargetDir));
+	}
+
+	@After
+	public void teardown() throws IOException {
 		Files.walkFileTree(targetDir, new SimpleFileVisitor<Path>() {
 
 			@Override
@@ -66,10 +70,46 @@ public class ClassDiagramProcessorTest {
 
 			@Override
 			public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-				if (exc != null) throw exc;
+				if (exc != null)
+					throw exc;
 				Files.delete(dir);
 				return FileVisitResult.CONTINUE;
 			}
 		});
+	}
+
+	@Test
+	public void testMultipleAnnotationsOnOneClass() throws Exception {
+		StringSourceJavaFileObject javaSource = new StringSourceJavaFileObject( //
+				"org.gaertner.test.EmptyClass", //
+				"package org.gaertner.test;\n" //
+						+ "import org.gaertner.annotations.UmlClassDiagram;\n" //
+						+ "@UmlClassDiagram(filename=\"test_detail\")\n" //
+						+ "@UmlClassDiagram(filename=\"test\", fields= {}, methods={})\n" //
+						+ "public class EmptyClass {\n" //
+						+ "	int g;\n" //
+						+ "}" //
+		);
+
+		CompilationTask task = CompilationTaskBuilder.compilationTask(compiler).withFileManager(fileManager).withJavaFile(javaSource).build();
+		task.setProcessors(Arrays.asList(new ClassDiagramProcessor()));
+		task.call();
+
+		for (List<String> pathParts : Arrays.asList(Arrays.asList("org", "gaertner", "test", "EmptyClass.class")) ) {
+			File file = createPath(classTargetDir, pathParts);
+			Assert.assertThat(file, FileMatchers.anExistingFile());
+		}
+		for (List<String> pathParts : Arrays.asList(Arrays.asList("test.puml"), Arrays.asList("test.svg"), Arrays.asList("test_detail.puml"), Arrays.asList("test_detail.svg")) ) {
+			File file = createPath(generatedSourcesTargetDir, pathParts);
+			Assert.assertThat(file.getAbsolutePath(), file, FileMatchers.anExistingFile());
+		}
+	}
+
+	private File createPath(File startDir, List<String> pathParts) {
+		File classFile = startDir;
+		for (String pathPart : pathParts) {
+			classFile = new File(classFile, pathPart);
+		}
+		return classFile;
 	}
 }
