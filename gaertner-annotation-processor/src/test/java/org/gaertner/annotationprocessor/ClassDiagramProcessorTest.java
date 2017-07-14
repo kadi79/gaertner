@@ -16,6 +16,14 @@ import javax.tools.StandardJavaFileManager;
 import javax.tools.StandardLocation;
 import javax.tools.ToolProvider;
 
+import org.easymock.Capture;
+import org.easymock.CaptureType;
+import org.easymock.EasyMock;
+import org.easymock.MockType;
+import org.gaertner.annotationprocessor.puml.model.DiagramFactory;
+import org.gaertner.annotationprocessor.puml.model.classdiagram.ClassDiagram;
+import org.gaertner.annotationprocessor.puml.model.classdiagram.elements.Class;
+import org.hamcrest.Matchers;
 import org.hamcrest.io.FileMatchers;
 import org.junit.After;
 import org.junit.Assert;
@@ -29,20 +37,21 @@ public class ClassDiagramProcessorTest {
 	private Path targetDir;
 	private File classTargetDir;
 	private File generatedSourcesTargetDir;
-//	private Writer consoleWriter;
+	// private Writer consoleWriter;
 
 	@Before
 	public void setup() throws IOException {
 		compiler = ToolProvider.getSystemJavaCompiler();
 		setupFileManager();
-//		setupConsoleOutput();
+		// setupConsoleOutput();
 	}
 
-//	private void setupConsoleOutput() throws UnsupportedEncodingException {
-//		StringWriter stringWriter = new StringWriter();
-//		OutputStreamWriter outputStreamWriter = new OutputStreamWriter(System.out, "UTF-8");
-//		consoleWriter = new TeeWriter(outputStreamWriter, stringWriter);
-//	}
+	// private void setupConsoleOutput() throws UnsupportedEncodingException {
+	// StringWriter stringWriter = new StringWriter();
+	// OutputStreamWriter outputStreamWriter = new OutputStreamWriter(System.out,
+	// "UTF-8");
+	// consoleWriter = new TeeWriter(outputStreamWriter, stringWriter);
+	// }
 
 	private void setupFileManager() throws IOException {
 		targetDir = Files.createTempDirectory("target");
@@ -91,18 +100,77 @@ public class ClassDiagramProcessorTest {
 						+ "}" //
 		);
 
-		CompilationTask task = CompilationTaskBuilder.compilationTask(compiler).withFileManager(fileManager).withJavaFile(javaSource).build();
+		CompilationTask task = CompilationTaskBuilder //
+				.compilationTask(compiler) //
+				.withFileManager(fileManager) //
+				.withJavaFile(javaSource) //
+				.build();
 		task.setProcessors(Arrays.asList(new ClassDiagramProcessor()));
 		task.call();
 
-		for (List<String> pathParts : Arrays.asList(Arrays.asList("org", "gaertner", "test", "EmptyClass.class")) ) {
+		for (List<String> pathParts : Arrays.asList(Arrays.asList("org", "gaertner", "test", "EmptyClass.class"))) {
 			File file = createPath(classTargetDir, pathParts);
 			Assert.assertThat(file, FileMatchers.anExistingFile());
 		}
-		for (List<String> pathParts : Arrays.asList(Arrays.asList("test.puml"), Arrays.asList("test.svg"), Arrays.asList("test_detail.puml"), Arrays.asList("test_detail.svg")) ) {
+		for (List<String> pathParts : Arrays.asList(Arrays.asList("test.puml"), Arrays.asList("test.svg"),
+				Arrays.asList("test_detail.puml"), Arrays.asList("test_detail.svg"))) {
 			File file = createPath(generatedSourcesTargetDir, pathParts);
 			Assert.assertThat(file.getAbsolutePath(), file, FileMatchers.anExistingFile());
 		}
+	}
+
+	@Test
+	public void testReferenceTypeAnnotation() throws Exception {
+		StringSourceJavaFileObject sourceTestClass1 = new StringSourceJavaFileObject( //
+				"org.gaertner.test.TestClass1", //
+				"package org.gaertner.test;\n" //
+						+ "import org.gaertner.annotations.UmlClassDiagram;\n" //
+						+ "import org.gaertner.annotations.ReferenceType;\n" //
+						+ "import java.util.ArrayList;\n" //
+						+ "import java.util.List;\n"
+						+ "@UmlClassDiagram(filename=\"test_detail\")\n" //
+						+ "public class TestClass1 {\n" //
+						+ "@ReferenceType(\"org.gaertner.test.TestClass2\")\n"
+						+ "	List<TestClass2> tests = new ArrayList<>();\n" //
+						+ "}" //
+		);
+		StringSourceJavaFileObject sourceTestClass2 = new StringSourceJavaFileObject( //
+				"org.gaertner.test.TestClass2", //
+				"package org.gaertner.test;\n" //
+						+ "import org.gaertner.annotations.UmlClassDiagram;\n" //
+						+ "@UmlClassDiagram(filename=\"test_detail\")\n" //
+						+ "public class TestClass2 {\n" //
+						+ "	int g;\n" //
+						+ "}" //
+		);
+
+		ClassDiagram mockDiagram = EasyMock.mock(MockType.STRICT, ClassDiagram.class);
+		Capture<Class> classesCapture = Capture.newInstance(CaptureType.ALL);
+		mockDiagram.addClass(EasyMock.capture(classesCapture));
+		EasyMock.expectLastCall().times(2);
+		mockDiagram.write(EasyMock.anyObject());
+
+		DiagramFactory mockFactory = EasyMock.mock(MockType.STRICT, DiagramFactory.class);
+		EasyMock.expect(mockFactory.createClassDiagram("test_detail")).andReturn(mockDiagram);
+		
+		EasyMock.replay(mockFactory, mockDiagram);
+
+		CompilationTask task = CompilationTaskBuilder //
+				.compilationTask(compiler) //
+				.withFileManager(fileManager) //
+				.withJavaFile(sourceTestClass1) //
+				.withJavaFile(sourceTestClass2) //
+				.build();
+
+		ClassDiagramProcessor classDiagramProcessor = new ClassDiagramProcessor(mockFactory );
+		task.setProcessors(Arrays.asList(classDiagramProcessor));
+		task.call();
+		
+		EasyMock.verify(mockFactory, mockDiagram);
+		List<Class> values = classesCapture.getValues();
+		Assert.assertThat(values.size(), Matchers.is(2));
+		Class class1 = values.get(0);
+		Assert.assertThat(class1.getFields().get(0).getReferenceType(), Matchers.is("org.gaertner.test.TestClass2"));
 	}
 
 	private File createPath(File startDir, List<String> pathParts) {

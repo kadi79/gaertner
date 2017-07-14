@@ -39,6 +39,7 @@ import org.gaertner.annotationprocessor.puml.model.classdiagram.elements.Class;
 import org.gaertner.annotationprocessor.puml.model.classdiagram.elements.Field;
 import org.gaertner.annotationprocessor.puml.model.classdiagram.elements.Method;
 import org.gaertner.annotationprocessor.util.TeeWriter;
+import org.gaertner.annotations.ReferenceType;
 import org.gaertner.annotations.UmlClassDiagram;
 import org.gaertner.annotations.UmlClassDiagrams;
 import org.gaertner.annotations.Visibility;
@@ -144,7 +145,8 @@ public class ClassDiagramProcessor extends AbstractProcessor {
 			switch (kind) {
 			case FIELD:
 				VariableElement variable = (VariableElement) element;
-				Field field = new Field(variable.asType().toString(), variable.getSimpleName().toString(), mapToVisibility(variable.getModifiers()));
+				ReferenceType referenceType = variable.getAnnotation(ReferenceType.class);
+				Field field = new Field(variable.asType().toString(), variable.getSimpleName().toString(), mapToVisibility(variable.getModifiers()), referenceType == null?null:referenceType.value());
 				clazz.addField(field);
 				break;
 			case METHOD:
@@ -189,7 +191,7 @@ public class ClassDiagramProcessor extends AbstractProcessor {
 		String filename = annotation.filename();
 		ClassDiagram classDiagram = classDiagrams.get(filename);
 		if (classDiagram == null) {
-			classDiagram = diagramFactory.createClassDiagram();
+			classDiagram = diagramFactory.createClassDiagram(filename);
 			classDiagrams.put(filename, classDiagram);
 		}
 		return classDiagram;

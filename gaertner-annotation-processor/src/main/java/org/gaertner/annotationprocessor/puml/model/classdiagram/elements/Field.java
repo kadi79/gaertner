@@ -9,7 +9,11 @@ public class Field extends TypedElement {
 	private Visibility visibility;
 	
 	public Field(String type, String name, Visibility visibility) {
-		super(type);
+		this(type, name, visibility, null);
+	}
+	
+	public Field(String type, String name, Visibility visibility, String referenceType) {
+		super(type, referenceType);
 		this.name = name;
 		this.visibility = visibility;
 	}

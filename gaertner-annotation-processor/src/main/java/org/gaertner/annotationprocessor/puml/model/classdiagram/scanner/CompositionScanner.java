@@ -14,6 +14,6 @@ public class CompositionScanner extends RelationScanner {
 
 	@Override
 	protected List<String> extractRelationTargetKeys(Class clazz) {
-		return clazz.getFields().stream().map(Field::getType).collect(Collectors.toList());
+		return clazz.getFields().stream().map(Field::getReferenceType).collect(Collectors.toList());
 	}
 }

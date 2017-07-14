@@ -13,7 +13,7 @@ public class DiagramFactory {
 		return instance;
 	}
 	
-	public ClassDiagram createClassDiagram() {
-		return new ClassDiagram();
+	public ClassDiagram createClassDiagram(String diagramName) {
+		return new ClassDiagram(diagramName);
 	}
 }

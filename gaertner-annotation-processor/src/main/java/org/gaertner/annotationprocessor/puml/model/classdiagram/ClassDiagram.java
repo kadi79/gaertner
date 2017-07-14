@@ -21,8 +21,17 @@ public class ClassDiagram {
 
 	private SortedSet<Class> classes = new TreeSet<>();
 	private List<RelationScanner> relationScanners = Arrays.asList(new SupertypeScanner(), new CompositionScanner());
+	private String diagramName;
 	
 
+	public ClassDiagram(String diagramName) {
+		this.diagramName = diagramName;
+	}
+
+	public String getDiagramName() {
+		return diagramName;
+	}
+	
 	public void addClass(Class clazz) {
 		classes.add(clazz);
 		for (RelationScanner scanner : relationScanners) {
