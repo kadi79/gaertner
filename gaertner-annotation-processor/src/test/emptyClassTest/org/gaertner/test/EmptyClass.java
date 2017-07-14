@@ -1,6 +1,6 @@
 package org.gaertner.test;
 
-import org.gaertner.annotations.UmlClassDiagram;
+import com.github.kadi79.gaertner.annotations.UmlClassDiagram;
 
 @UmlClassDiagram(filename="test_detail")
 @UmlClassDiagram(filename="test", fields= {}, methods={})
