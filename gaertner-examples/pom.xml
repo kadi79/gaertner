@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.github.kadi79.gaertner</groupId>
 		<artifactId>gaertner</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.0.2-SNAPSHOT</version>
 	</parent>
 	<artifactId>gaertner-examples</artifactId>
 	<dependencies>
@@ -15,7 +15,7 @@
 		<dependency>
 			<groupId>com.github.kadi79.gaertner</groupId>
 			<artifactId>gaertner-annotation-processor</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.0.2-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
