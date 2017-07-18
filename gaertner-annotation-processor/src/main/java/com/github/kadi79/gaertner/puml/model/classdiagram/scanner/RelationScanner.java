@@ -11,6 +11,11 @@ import com.github.kadi79.gaertner.puml.model.classdiagram.elements.Class;
 import com.github.kadi79.gaertner.puml.model.classdiagram.elements.Relation;
 import com.github.kadi79.gaertner.puml.model.classdiagram.elements.RelationType;
 
+/**
+ * <p>Abstract RelationScanner class.</p>
+ *
+ * @since 0.0.1
+ */
 public abstract class RelationScanner {
 	
 	private RelationType relationType;
@@ -19,19 +24,40 @@ public abstract class RelationScanner {
 	private Map<String, Class> scanned = new HashMap<>();
 	private SortedSet<Relation> foundRelations = new TreeSet<>();
 	
+	/**
+	 * <p>Constructor for RelationScanner.</p>
+	 *
+	 * @param relationType a {@link com.github.kadi79.gaertner.puml.model.classdiagram.elements.RelationType} object.
+	 */
 	public RelationScanner(RelationType relationType) {
 		this(relationType, false);
 	}
 	
+	/**
+	 * <p>Constructor for RelationScanner.</p>
+	 *
+	 * @param relationType a {@link com.github.kadi79.gaertner.puml.model.classdiagram.elements.RelationType} object.
+	 * @param reversed a boolean.
+	 */
 	public RelationScanner(RelationType relationType, boolean reversed) {
 		this.relationType = relationType;
 		this.reversed = reversed;
 	}
 	
+	/**
+	 * <p>Getter for the field <code>foundRelations</code>.</p>
+	 *
+	 * @return a {@link java.util.SortedSet} object.
+	 */
 	public SortedSet<Relation> getFoundRelations() {
 		return foundRelations;
 	}
 	
+	/**
+	 * <p>scanClass.</p>
+	 *
+	 * @param current a {@link com.github.kadi79.gaertner.puml.model.classdiagram.elements.Class} object.
+	 */
 	public void scanClass(Class current) {
 		scanned.put(current.getFqdn(), current);
 		
@@ -69,6 +95,12 @@ public abstract class RelationScanner {
 		}
 	}
 
+	/**
+	 * <p>extractRelationTargetKeys.</p>
+	 *
+	 * @param current a {@link com.github.kadi79.gaertner.puml.model.classdiagram.elements.Class} object.
+	 * @return a {@link java.util.List} object.
+	 */
 	protected abstract List<String> extractRelationTargetKeys(Class current);
 	
 }

@@ -7,6 +7,11 @@ import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+/**
+ * <p>UmlClassDiagram class.</p>
+ *
+ * @since 0.0.1
+ */
 @Repeatable(UmlClassDiagrams.class)
 @Retention(SOURCE)
 @Target({TYPE})

@@ -48,6 +48,11 @@ import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.SourceStringReader;
 
+/**
+ * <p>ClassDiagramProcessor class.</p>
+ *
+ * @since 0.0.1
+ */
 @SupportedAnnotationTypes({"com.github.kadi79.gaertner.annotations.UmlClassDiagram, com.github.kadi79.gaertner.annotations.UmlClassDiagrams"})
 public class ClassDiagramProcessor extends AbstractProcessor {
 
@@ -56,14 +61,23 @@ public class ClassDiagramProcessor extends AbstractProcessor {
 	private Filer filer = null;
 	private DiagramFactory diagramFactory;
 	
+	/**
+	 * <p>Constructor for ClassDiagramProcessor.</p>
+	 *
+	 * @param diagramFactory a {@link com.github.kadi79.gaertner.puml.model.DiagramFactory} object.
+	 */
 	public ClassDiagramProcessor(DiagramFactory diagramFactory) {
 		this.diagramFactory = diagramFactory;
 	}
 	
+	/**
+	 * <p>Constructor for ClassDiagramProcessor.</p>
+	 */
 	public ClassDiagramProcessor() {
 		this.diagramFactory = DiagramFactory.getInstance();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
 		if (roundEnv.processingOver()) return false;
@@ -197,6 +211,7 @@ public class ClassDiagramProcessor extends AbstractProcessor {
 		return classDiagram;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public synchronized void init(ProcessingEnvironment processingEnv) {
 		super.init(processingEnv);
@@ -204,6 +219,7 @@ public class ClassDiagramProcessor extends AbstractProcessor {
 		filer  = processingEnv.getFiler();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Set<String> getSupportedAnnotationTypes() {
 		Set<String> annotations = new HashSet<>();
@@ -212,6 +228,7 @@ public class ClassDiagramProcessor extends AbstractProcessor {
 		return annotations ;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public SourceVersion getSupportedSourceVersion() {
 		return SourceVersion.latestSupported();

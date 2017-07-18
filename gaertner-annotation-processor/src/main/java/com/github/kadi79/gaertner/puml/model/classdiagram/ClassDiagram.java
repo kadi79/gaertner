@@ -17,6 +17,11 @@ import com.github.kadi79.gaertner.puml.model.classdiagram.scanner.SupertypeScann
 import com.github.kadi79.gaertner.puml.model.classdiagram.writer.ClassWriter;
 import com.github.kadi79.gaertner.puml.model.classdiagram.writer.RelationWriter;
 
+/**
+ * <p>ClassDiagram class.</p>
+ *
+ * @since 0.0.1
+ */
 public class ClassDiagram {
 
 	private SortedSet<Class> classes = new TreeSet<>();
@@ -24,14 +29,29 @@ public class ClassDiagram {
 	private String diagramName;
 	
 
+	/**
+	 * <p>Constructor for ClassDiagram.</p>
+	 *
+	 * @param diagramName a {@link java.lang.String} object.
+	 */
 	public ClassDiagram(String diagramName) {
 		this.diagramName = diagramName;
 	}
 
+	/**
+	 * <p>Getter for the field <code>diagramName</code>.</p>
+	 *
+	 * @return a {@link java.lang.String} object.
+	 */
 	public String getDiagramName() {
 		return diagramName;
 	}
 	
+	/**
+	 * <p>addClass.</p>
+	 *
+	 * @param clazz a {@link com.github.kadi79.gaertner.puml.model.classdiagram.elements.Class} object.
+	 */
 	public void addClass(Class clazz) {
 		classes.add(clazz);
 		for (RelationScanner scanner : relationScanners) {
@@ -39,6 +59,11 @@ public class ClassDiagram {
 		}
 	}
 
+	/**
+	 * <p>write.</p>
+	 *
+	 * @param out a {@link java.io.Writer} object.
+	 */
 	public void write(Writer out) {
 		PrintWriter writer = (out instanceof PrintWriter) ? (PrintWriter) out : new PrintWriter(out);
 		RelationWriter relationWriter = new RelationWriter(writer);
@@ -65,6 +90,11 @@ public class ClassDiagram {
 		writer.flush();
 	}
 
+	/**
+	 * <p>toString.</p>
+	 *
+	 * @return a {@link java.lang.String} object.
+	 */
 	public String toString() {
 		StringWriter out = new StringWriter();
 		write(out);
