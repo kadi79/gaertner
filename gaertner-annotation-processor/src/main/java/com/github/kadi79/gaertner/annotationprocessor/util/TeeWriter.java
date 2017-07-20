@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  * <p>TeeWriter class.</p>
+ * <p>distributes everything written on this Stream to all of the Streams given as constructor argument.</p>
  *
  * @since 0.0.1
  */
@@ -17,7 +18,7 @@ public class TeeWriter extends Writer {
 	/**
 	 * <p>Constructor for TeeWriter.</p>
 	 *
-	 * @param writers a {@link java.io.Writer} object.
+	 * @param writers one or more {@link java.io.Writer} objects. Everything written on this Writer gets distributed to all of the given writers.
 	 */
 	public TeeWriter(Writer... writers) {
 		this.writers = Arrays.asList(writers);

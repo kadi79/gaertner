@@ -50,6 +50,7 @@ import net.sourceforge.plantuml.SourceStringReader;
 
 /**
  * <p>ClassDiagramProcessor class.</p>
+ * <p>processes all {@link com.github.kadi79.gaertner.annotations.UmlClassDiagram} and {@link com.github.kadi79.gaertner.annotations.UmlClassDiagrams} Annotations. For each Filename a puml File is created containing a collection of all Classes annotated with the same Filename. If possible the puml Files are transformed to svg files.</p>
  *
  * @since 0.0.1
  */
