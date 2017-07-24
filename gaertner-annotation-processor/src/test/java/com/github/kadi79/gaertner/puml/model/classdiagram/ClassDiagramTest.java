@@ -24,6 +24,7 @@ public class ClassDiagramTest {
 
 		Assert.assertEquals(//
 				"@startuml" + nl //
+				+ "skinparam linetype ortho" +nl //
 				+ "class org.gaertner.Class1 {" + nl  //
 				+ "}"  + nl //
 				+ "@enduml"  + nl, //
@@ -40,6 +41,7 @@ public class ClassDiagramTest {
 
 		Assert.assertEquals(//
 				"@startuml" + nl  //
+				+ "skinparam linetype ortho" +nl //
 				+ "class org.gaertner.Class1 {" + nl  //
 				+ "}" + nl  //
 				+ nl  //
@@ -62,7 +64,8 @@ public class ClassDiagramTest {
 
 		Assert.assertEquals(//
 				"@startuml" + nl  //
-				+ "org.gaertner.Class2*--org.gaertner.Class1" + nl //
+				+ "skinparam linetype ortho" +nl //
+				+ "org.gaertner.Class2*-[#ffa000]-org.gaertner.Class1" + nl //
 				+ nl //
 				+ "class org.gaertner.Class1 {" + nl  //
 				+ "}" + nl  //
@@ -87,7 +90,8 @@ public class ClassDiagramTest {
 
 		Assert.assertEquals(//
 				"@startuml" + nl  //
-				+ "org.gaertner.Class2*--org.gaertner.Class1" + nl //
+				+ "skinparam linetype ortho" +nl //
+				+ "org.gaertner.Class2*-[#ffa000]-org.gaertner.Class1" + nl //
 				+ nl //
 				+ "class org.gaertner.Class1 {" + nl  //
 				+ "}" + nl  //
@@ -112,7 +116,8 @@ public class ClassDiagramTest {
 
 		Assert.assertEquals(//
 				"@startuml" + nl  //
-				+ "org.gaertner.Class2*--org.gaertner.Class1" + nl //
+				+ "skinparam linetype ortho" +nl //
+				+ "org.gaertner.Class2*-[#ffa000]-org.gaertner.Class1" + nl //
 				+ nl //
 				+ "class org.gaertner.Class1 {" + nl  //
 				+ "}" + nl  //

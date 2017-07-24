@@ -6,20 +6,20 @@ package com.github.kadi79.gaertner.puml.model.classdiagram.elements;
  * @since 0.0.1
  */
 public enum RelationType {
-	EXTENSION("<|"), AGGREGATION("o"), COMPOSITION("*");
+	EXTENSION("<|-[#0000ff]-"), AGGREGATION("o-[#a0ff00]-"), COMPOSITION("*-[#ffa000]-");
 	
-	private String arrowHead;
+	private String arrowString;
 	
 	private RelationType(String arrowHead) {
-		this.arrowHead = arrowHead;
+		this.arrowString = arrowHead;
 	}
 	
 	/**
-	 * <p>Getter for the field <code>arrowHead</code>.</p>
+	 * <p>Getter for the field <code>arrowString</code>.</p>
 	 *
 	 * @return a {@link java.lang.String} object.
 	 */
-	public String getArrowHead() {
-		return arrowHead;
+	public String getArrowString() {
+		return arrowString;
 	}
 }

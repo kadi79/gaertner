@@ -70,6 +70,7 @@ public class ClassDiagram {
 		ClassWriter classWriter = new ClassWriter(writer);
 
 		writer.println("@startuml");
+		writer.println("skinparam linetype ortho");
 		for (RelationScanner relationScanner : relationScanners) {
 			SortedSet<Relation> relations = relationScanner.getFoundRelations();
 			if (relations.isEmpty()) continue;

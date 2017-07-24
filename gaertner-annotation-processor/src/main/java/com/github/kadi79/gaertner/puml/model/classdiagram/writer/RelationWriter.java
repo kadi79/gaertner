@@ -28,6 +28,8 @@ public class RelationWriter {
 	 * @param relation a {@link com.github.kadi79.gaertner.puml.model.classdiagram.elements.Relation} object.
 	 */
 	public void write(Relation relation) {
-		out.println(String.format("%s%s--%s", relation.getFrom().getFqdn(), relation.getRelationType().getArrowHead(), relation.getTo().getFqdn()));
+		out.print(relation.getFrom().getFqdn());
+		out.print(relation.getRelationType().getArrowString());
+		out.println(relation.getTo().getFqdn());
 	}
 }
