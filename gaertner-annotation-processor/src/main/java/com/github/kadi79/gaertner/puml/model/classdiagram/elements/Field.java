@@ -19,6 +19,7 @@ public class Field extends TypedElement {
 	 * @param type a {@link java.lang.String} object.
 	 * @param name a {@link java.lang.String} object.
 	 * @param visibility a {@link com.github.kadi79.gaertner.annotations.Visibility} object.
+	 * @since 0.0.2
 	 */
 	public Field(String type, String name, Visibility visibility) {
 		this(type, name, visibility, null);
@@ -31,6 +32,7 @@ public class Field extends TypedElement {
 	 * @param name a {@link java.lang.String} object.
 	 * @param visibility a {@link com.github.kadi79.gaertner.annotations.Visibility} object.
 	 * @param referenceType a {@link java.lang.String} object.
+	 * @since 0.0.2
 	 */
 	public Field(String type, String name, Visibility visibility, String referenceType) {
 		super(type, referenceType);
@@ -42,6 +44,7 @@ public class Field extends TypedElement {
 	 * <p>Getter for the field <code>name</code>.</p>
 	 *
 	 * @return a {@link java.lang.String} object.
+	 * @since 0.0.2
 	 */
 	public String getName() {
 		return name;
@@ -51,6 +54,7 @@ public class Field extends TypedElement {
 	 * <p>Getter for the field <code>visibility</code>.</p>
 	 *
 	 * @return a {@link com.github.kadi79.gaertner.annotations.Visibility} object.
+	 * @since 0.0.2
 	 */
 	public Visibility getVisibility() {
 		return visibility;
@@ -60,6 +64,7 @@ public class Field extends TypedElement {
 	 * <p>Getter for the field <code>enclosingElement</code>.</p>
 	 *
 	 * @return a {@link com.github.kadi79.gaertner.puml.model.classdiagram.elements.Class} object.
+	 * @since 0.0.2
 	 */
 	public Class getEnclosingElement() {
 		return enclosingElement;

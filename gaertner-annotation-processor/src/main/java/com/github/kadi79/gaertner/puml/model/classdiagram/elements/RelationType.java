@@ -18,6 +18,7 @@ public enum RelationType {
 	 * <p>Getter for the field <code>arrowString</code>.</p>
 	 *
 	 * @return a {@link java.lang.String} object.
+	 * @since 0.0.2
 	 */
 	public String getArrowString() {
 		return arrowString;

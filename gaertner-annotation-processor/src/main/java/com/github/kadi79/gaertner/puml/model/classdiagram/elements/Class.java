@@ -55,6 +55,7 @@ public class Class implements Comparable<Class> {
 	 * @param fqdn a {@link java.lang.String} object.
 	 * @param fieldsToDisplay a {@link java.util.List} object.
 	 * @param methodsToDisplay a {@link java.util.List} object.
+	 * @since 0.0.2
 	 */
 	public Class(String fqdn, List<Visibility> fieldsToDisplay,  List<Visibility> methodsToDisplay) {
 		super();
@@ -67,6 +68,7 @@ public class Class implements Comparable<Class> {
 	 * <p>Getter for the field <code>fqdn</code>.</p>
 	 *
 	 * @return a {@link java.lang.String} object.
+	 * @since 0.0.2
 	 */
 	public String getFqdn() {
 		return fqdn;
@@ -76,6 +78,7 @@ public class Class implements Comparable<Class> {
 	 * <p>addField.</p>
 	 *
 	 * @param field a {@link com.github.kadi79.gaertner.puml.model.classdiagram.elements.Field} object.
+	 * @since 0.0.2
 	 */
 	public void addField(Field field) {
 		allFields.add(field);
@@ -87,6 +90,7 @@ public class Class implements Comparable<Class> {
 	 * <p>getFields.</p>
 	 *
 	 * @return a {@link java.util.List} object.
+	 * @since 0.0.2
 	 */
 	public List<Field> getFields() {
 		return allFields;
@@ -96,6 +100,7 @@ public class Class implements Comparable<Class> {
 	 * <p>Getter for the field <code>displayFields</code>.</p>
 	 *
 	 * @return a {@link java.util.List} object.
+	 * @since 0.0.2
 	 */
 	public List<Field> getDisplayFields() {
 		if (displayFields == null) {
@@ -108,6 +113,7 @@ public class Class implements Comparable<Class> {
 	 * <p>addMethod.</p>
 	 *
 	 * @param method a {@link com.github.kadi79.gaertner.puml.model.classdiagram.elements.Method} object.
+	 * @since 0.0.2
 	 */
 	public void addMethod(Method method) {
 		allMethods.add(method);
@@ -119,6 +125,7 @@ public class Class implements Comparable<Class> {
 	 * <p>getMethods.</p>
 	 *
 	 * @return a {@link java.util.List} object.
+	 * @since 0.0.2
 	 */
 	public List<Method> getMethods() {
 		return allMethods;
@@ -128,6 +135,7 @@ public class Class implements Comparable<Class> {
 	 * <p>Getter for the field <code>displayMethods</code>.</p>
 	 *
 	 * @return a {@link java.util.List} object.
+	 * @since 0.0.2
 	 */
 	public List<Method> getDisplayMethods() {
 		if (displayMethods == null) {
@@ -173,6 +181,7 @@ public class Class implements Comparable<Class> {
 	 * <p>Getter for the field <code>extendsType</code>.</p>
 	 *
 	 * @return a {@link java.lang.String} object.
+	 * @since 0.0.2
 	 */
 	public String getExtendsType() {
 		return extendsType;
@@ -182,15 +191,26 @@ public class Class implements Comparable<Class> {
 	 * <p>Setter for the field <code>extendsType</code>.</p>
 	 *
 	 * @param extendsType a {@link java.lang.String} object.
+	 * @since 0.0.2
 	 */
 	public void setExtendsType(String extendsType) {
 		this.extendsType = extendsType;
 	}
 
+	/**
+	 * <p>Getter for the field <code>stereotype</code>.</p>
+	 *
+	 * @return a {@link com.github.kadi79.gaertner.puml.model.classdiagram.elements.Stereotype} object.
+	 */
 	public Stereotype getStereotype() {
 		return stereotype;
 	}
 
+	/**
+	 * <p>Setter for the field <code>stereotype</code>.</p>
+	 *
+	 * @param stereotype a {@link com.github.kadi79.gaertner.puml.model.classdiagram.elements.Stereotype} object.
+	 */
 	public void setStereotype(Stereotype stereotype) {
 		this.stereotype = stereotype;
 	}

@@ -20,6 +20,7 @@ public class ClassWriter {
 	 * <p>Constructor for ClassWriter.</p>
 	 *
 	 * @param out a {@link java.io.Writer} object.
+	 * @since 0.0.2
 	 */
 	public ClassWriter(Writer out) {
 		this.out = (out instanceof PrintWriter) ? (PrintWriter) out : new PrintWriter(out);
@@ -29,7 +30,8 @@ public class ClassWriter {
 	 * <p>write.</p>
 	 *
 	 * @param clazz a {@link com.github.kadi79.gaertner.puml.model.classdiagram.elements.Class} object.
-	 * @throws IOException 
+	 * @throws java.io.IOException if any.
+	 * @since 0.0.2
 	 */
 	public void write(Class clazz) throws IOException {
 		out.print("class ");

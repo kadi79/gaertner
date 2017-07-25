@@ -15,6 +15,8 @@ import com.github.kadi79.gaertner.puml.model.classdiagram.elements.RelationType;
 public class CompositionScanner extends RelationScanner {
 	/**
 	 * <p>Constructor for CompositionScanner.</p>
+	 *
+	 * @since 0.0.2
 	 */
 	public CompositionScanner() {
 		super(RelationType.COMPOSITION);

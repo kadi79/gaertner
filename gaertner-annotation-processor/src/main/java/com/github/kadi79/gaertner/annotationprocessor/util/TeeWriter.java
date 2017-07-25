@@ -19,6 +19,7 @@ public class TeeWriter extends Writer {
 	 * <p>Constructor for TeeWriter.</p>
 	 *
 	 * @param writers one or more {@link java.io.Writer} objects. Everything written on this Writer gets distributed to all of the given writers.
+	 * @since 0.0.2
 	 */
 	public TeeWriter(Writer... writers) {
 		this.writers = Arrays.asList(writers);
@@ -29,6 +30,7 @@ public class TeeWriter extends Writer {
 	 *
 	 * @param lock a {@link java.lang.Object} object.
 	 * @param writers a {@link java.io.Writer} object.
+	 * @since 0.0.2
 	 */
 	public TeeWriter(Object lock, Writer... writers) {
 		super(lock);

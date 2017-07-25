@@ -33,6 +33,7 @@ public class ClassDiagram {
 	 * <p>Constructor for ClassDiagram.</p>
 	 *
 	 * @param diagramName a {@link java.lang.String} object.
+	 * @since 0.0.2
 	 */
 	public ClassDiagram(String diagramName) {
 		this.diagramName = diagramName;
@@ -42,6 +43,7 @@ public class ClassDiagram {
 	 * <p>Getter for the field <code>diagramName</code>.</p>
 	 *
 	 * @return a {@link java.lang.String} object.
+	 * @since 0.0.2
 	 */
 	public String getDiagramName() {
 		return diagramName;
@@ -51,6 +53,7 @@ public class ClassDiagram {
 	 * <p>addClass.</p>
 	 *
 	 * @param clazz a {@link com.github.kadi79.gaertner.puml.model.classdiagram.elements.Class} object.
+	 * @since 0.0.2
 	 */
 	public void addClass(Class clazz) {
 		classes.add(clazz);
@@ -63,7 +66,8 @@ public class ClassDiagram {
 	 * <p>write.</p>
 	 *
 	 * @param out a {@link java.io.Writer} object.
-	 * @throws IOException 
+	 * @throws java.io.IOException if any.
+	 * @since 0.0.2
 	 */
 	public void write(Writer out) throws IOException {
 		PrintWriter writer = (out instanceof PrintWriter) ? (PrintWriter) out : new PrintWriter(out);
@@ -96,6 +100,7 @@ public class ClassDiagram {
 	 * <p>toString.</p>
 	 *
 	 * @return a {@link java.lang.String} object.
+	 * @since 0.0.2
 	 */
 	public String toString() {
 		StringWriter out = new StringWriter();

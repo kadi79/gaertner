@@ -69,6 +69,7 @@ public class ClassDiagramProcessor extends AbstractProcessor {
 	 * <p>Constructor for ClassDiagramProcessor.</p>
 	 *
 	 * @param diagramFactory a {@link com.github.kadi79.gaertner.puml.model.DiagramFactory} object.
+	 * @since 0.0.2
 	 */
 	public ClassDiagramProcessor(DiagramFactory diagramFactory) {
 		this.diagramFactory = diagramFactory;
@@ -76,6 +77,8 @@ public class ClassDiagramProcessor extends AbstractProcessor {
 	
 	/**
 	 * <p>Constructor for ClassDiagramProcessor.</p>
+	 *
+	 * @since 0.0.2
 	 */
 	public ClassDiagramProcessor() {
 		this.diagramFactory = DiagramFactory.getInstance();

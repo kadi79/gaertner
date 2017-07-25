@@ -16,6 +16,7 @@ public class TypedElement {
 	 * <p>Constructor for TypedElement.</p>
 	 *
 	 * @param type a {@link java.lang.String} object.
+	 * @since 0.0.2
 	 */
 	public TypedElement(String type) {
 		this(type, null);
@@ -26,6 +27,7 @@ public class TypedElement {
 	 *
 	 * @param type a {@link java.lang.String} object.
 	 * @param referenceType a {@link java.lang.String} object.
+	 * @since 0.0.2
 	 */
 	public TypedElement(String type, String referenceType) {
 		super();
@@ -37,6 +39,7 @@ public class TypedElement {
 	 * <p>Getter for the field <code>type</code>.</p>
 	 *
 	 * @return a {@link java.lang.String} object.
+	 * @since 0.0.2
 	 */
 	public String getType() {
 		return type;
@@ -46,6 +49,7 @@ public class TypedElement {
 	 * <p>Getter for the field <code>simpleType</code>.</p>
 	 *
 	 * @return a {@link java.lang.String} object.
+	 * @since 0.0.2
 	 */
 	public String getSimpleType() {
 		if (simpleType == null)
@@ -61,6 +65,7 @@ public class TypedElement {
 	 * <p>Getter for the field <code>referenceType</code>.</p>
 	 *
 	 * @return a {@link java.lang.String} object.
+	 * @since 0.0.2
 	 */
 	public String getReferenceType() {
 		if (referenceType == null)
@@ -72,6 +77,7 @@ public class TypedElement {
 	 * <p>Getter for the field <code>simpleReferenceType</code>.</p>
 	 *
 	 * @return a {@link java.lang.String} object.
+	 * @since 0.0.2
 	 */
 	public String getSimpleReferenceType() {
 		if (simpleReferenceType == null)
