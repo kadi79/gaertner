@@ -4,7 +4,7 @@
 
 	<groupId>com.github.kadi79.gaertner</groupId>
 	<artifactId>gaertner</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.3-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Gaertner</name>
@@ -43,7 +43,7 @@ It generates .puml Files further processed by PlantUml and generates diagrams in
 			<dependency>
 				<groupId>com.github.kadi79.gaertner</groupId>
 				<artifactId>gaertner-annotations</artifactId>
-				<version>0.0.2-SNAPSHOT</version>
+				<version>0.0.3-SNAPSHOT</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
