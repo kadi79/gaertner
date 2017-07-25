@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.github.kadi79.gaertner</groupId>
 		<artifactId>gaertner</artifactId>
-		<version>0.0.2-SNAPSHOT</version>
+		<version>0.0.2</version>
 	</parent>
 	<artifactId>gaertner-annotation-processor</artifactId>
 	<dependencies>
