@@ -35,9 +35,12 @@ import javax.tools.StandardLocation;
 
 import com.github.kadi79.gaertner.annotationprocessor.util.TeeWriter;
 import com.github.kadi79.gaertner.annotations.ReferenceType;
+import com.github.kadi79.gaertner.annotations.Stereotype;
+import com.github.kadi79.gaertner.annotations.Stereotype.HighlightType;
 import com.github.kadi79.gaertner.annotations.UmlClassDiagram;
 import com.github.kadi79.gaertner.annotations.UmlClassDiagrams;
 import com.github.kadi79.gaertner.annotations.Visibility;
+import com.github.kadi79.gaertner.puml.model.Color;
 import com.github.kadi79.gaertner.puml.model.DiagramFactory;
 import com.github.kadi79.gaertner.puml.model.classdiagram.ClassDiagram;
 import com.github.kadi79.gaertner.puml.model.classdiagram.elements.Class;
@@ -154,6 +157,12 @@ public class ClassDiagramProcessor extends AbstractProcessor {
 	private Class createClassElement(TypeElement typeElement, UmlClassDiagram annotation) {
 		Name qualifiedName = typeElement.getQualifiedName();
 		Class clazz = new Class(qualifiedName.toString(), asList(annotation.fields()), asList(annotation.methods()));
+		Stereotype stereotype = annotation.stereotype();
+		boolean specifiedHighlighting = HighlightType.SPECIFIED.equals(stereotype.highlightType());
+		boolean namePresent = isNotEmpty(stereotype.type());
+		if (namePresent || specifiedHighlighting) {
+			clazz.setStereotype(new com.github.kadi79.gaertner.puml.model.classdiagram.elements.Stereotype(namePresent?stereotype.type():null, specifiedHighlighting?stereotype.highlightChar():null, new Color(stereotype.highlightColor())));
+		}
 		List<? extends Element> elements = typeElement.getEnclosedElements();
 		for (Element element : elements) {
 			ElementKind kind = element.getKind();
@@ -184,6 +193,10 @@ public class ClassDiagramProcessor extends AbstractProcessor {
 		}
 		
 		return clazz;
+	}
+
+	private boolean isNotEmpty(String type) {
+		return type != null && !type.isEmpty();
 	}
 
 	private Visibility mapToVisibility(Set<Modifier> modifiers) {

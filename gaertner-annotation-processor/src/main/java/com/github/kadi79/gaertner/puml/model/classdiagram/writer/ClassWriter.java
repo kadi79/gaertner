@@ -1,5 +1,6 @@
 package com.github.kadi79.gaertner.puml.model.classdiagram.writer;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
 
@@ -28,10 +29,15 @@ public class ClassWriter {
 	 * <p>write.</p>
 	 *
 	 * @param clazz a {@link com.github.kadi79.gaertner.puml.model.classdiagram.elements.Class} object.
+	 * @throws IOException 
 	 */
-	public void write(Class clazz) {
+	public void write(Class clazz) throws IOException {
 		out.print("class ");
 		out.print(clazz.getFqdn());
+		if (clazz.getStereotype() != null) {
+			out.write(" ");
+			clazz.getStereotype().write(out);
+		}
 		out.println(" {");
 		for (Field field : clazz.getDisplayFields()) {
 			out.println("\t" + field.getVisibility().getPresentation() + field.getSimpleType() + " " + field.getName());

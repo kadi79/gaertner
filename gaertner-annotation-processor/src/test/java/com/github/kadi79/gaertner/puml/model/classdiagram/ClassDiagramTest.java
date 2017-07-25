@@ -1,16 +1,15 @@
 package com.github.kadi79.gaertner.puml.model.classdiagram;
 
-import static org.junit.Assert.*;
-
 import java.io.StringWriter;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.github.kadi79.gaertner.annotations.Visibility;
-import com.github.kadi79.gaertner.puml.model.classdiagram.ClassDiagram;
+import com.github.kadi79.gaertner.puml.model.Color;
 import com.github.kadi79.gaertner.puml.model.classdiagram.elements.Class;
 import com.github.kadi79.gaertner.puml.model.classdiagram.elements.Field;
+import com.github.kadi79.gaertner.puml.model.classdiagram.elements.Stereotype;
 
 public class ClassDiagramTest {
 
@@ -124,6 +123,25 @@ public class ClassDiagramTest {
 				+ nl  //
 				+ "class org.gaertner.Class2 {" + nl  //
 				+ "\t-List<Class1> ref" + nl //
+				+ "}" + nl  //
+				+ "@enduml" + nl , //
+				stringWriter.toString());
+	}
+
+
+	@Test
+	public void testStereotype() throws Exception {
+		ClassDiagram classDiagram = new ClassDiagram("testDiagram");
+		Class clazz1 = new Class("org.gaertner.Class1", Class.DEFAULT_FIELDS_TO_DISPLAY, Class.DEFAULT_METHODS_TO_DISPLAY);
+		clazz1.setStereotype(new Stereotype("Stereotype", 'S', new Color("#00ff00")));
+		classDiagram.addClass(clazz1);
+		StringWriter stringWriter = new StringWriter();
+		classDiagram.write(stringWriter);
+
+		Assert.assertEquals(//
+				"@startuml" + nl  //
+				+ "skinparam linetype ortho" +nl //
+				+ "class org.gaertner.Class1 << (S,#00ff00) Stereotype >> {" + nl  //
 				+ "}" + nl  //
 				+ "@enduml" + nl , //
 				stringWriter.toString());

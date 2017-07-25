@@ -27,7 +27,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.github.kadi79.gaertner.annotationprocessor.ClassDiagramProcessor;
 import com.github.kadi79.gaertner.puml.model.DiagramFactory;
 import com.github.kadi79.gaertner.puml.model.classdiagram.ClassDiagram;
 import com.github.kadi79.gaertner.puml.model.classdiagram.elements.Class;
@@ -175,6 +174,49 @@ public class ClassDiagramProcessorTest {
 		Assert.assertThat(class1.getFields().get(0).getReferenceType(), Matchers.is("org.gaertner.test.TestClass2"));
 	}
 
+	@Test
+	public void testStereotypeName() throws Exception {
+		StringSourceJavaFileObject sourceTestClass1 = new StringSourceJavaFileObject( //
+				"org.gaertner.test.TestClass1", //
+				"package org.gaertner.test;\n" //
+						+ "import com.github.kadi79.gaertner.annotations.UmlClassDiagram;\n" //
+						+ "import com.github.kadi79.gaertner.annotations.ReferenceType;\n" //
+						+ "import com.github.kadi79.gaertner.annotations.Stereotype;\n" //
+						+ "import java.util.ArrayList;\n" //
+						+ "import java.util.List;\n"
+						+ "@UmlClassDiagram(filename=\"test_detail\", stereotype=@Stereotype(type=\"Stereotype\"))\n" //
+						+ "public class TestClass1 {\n" //
+						+ "}" //
+		);
+
+		ClassDiagram mockDiagram = EasyMock.mock(MockType.STRICT, ClassDiagram.class);
+		Capture<Class> classesCapture = Capture.newInstance(CaptureType.ALL);
+		mockDiagram.addClass(EasyMock.capture(classesCapture));
+		EasyMock.expectLastCall().anyTimes();
+		mockDiagram.write(EasyMock.anyObject());
+
+		DiagramFactory mockFactory = EasyMock.mock(MockType.STRICT, DiagramFactory.class);
+		EasyMock.expect(mockFactory.createClassDiagram("test_detail")).andReturn(mockDiagram);
+		
+		EasyMock.replay(mockFactory, mockDiagram);
+
+		CompilationTask task = CompilationTaskBuilder //
+				.compilationTask(compiler) //
+				.withFileManager(fileManager) //
+				.withJavaFile(sourceTestClass1) //
+				.build();
+
+		ClassDiagramProcessor classDiagramProcessor = new ClassDiagramProcessor(mockFactory );
+		task.setProcessors(Arrays.asList(classDiagramProcessor));
+		task.call();
+		
+		EasyMock.verify(mockFactory, mockDiagram);
+		List<Class> values = classesCapture.getValues();
+		Assert.assertThat(values.size(), Matchers.is(1));
+		Class class1 = values.get(0);
+		Assert.assertThat(class1.getStereotype(), Matchers.notNullValue());
+	}
+	
 	private File createPath(File startDir, List<String> pathParts) {
 		File classFile = startDir;
 		for (String pathPart : pathParts) {

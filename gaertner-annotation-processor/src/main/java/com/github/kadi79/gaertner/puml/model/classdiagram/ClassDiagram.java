@@ -63,8 +63,9 @@ public class ClassDiagram {
 	 * <p>write.</p>
 	 *
 	 * @param out a {@link java.io.Writer} object.
+	 * @throws IOException 
 	 */
-	public void write(Writer out) {
+	public void write(Writer out) throws IOException {
 		PrintWriter writer = (out instanceof PrintWriter) ? (PrintWriter) out : new PrintWriter(out);
 		RelationWriter relationWriter = new RelationWriter(writer);
 		ClassWriter classWriter = new ClassWriter(writer);
@@ -98,8 +99,8 @@ public class ClassDiagram {
 	 */
 	public String toString() {
 		StringWriter out = new StringWriter();
-		write(out);
 		try {
+			write(out);
 			out.close();
 		} catch (IOException e) {
 			e.printStackTrace();

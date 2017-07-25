@@ -32,7 +32,9 @@ public class Class implements Comparable<Class> {
 			));
 
 	private String fqdn;
-
+	
+	private Stereotype stereotype;
+	
 	private String extendsType;
 
 	private List<Field> allFields = new ArrayList<>();
@@ -183,5 +185,13 @@ public class Class implements Comparable<Class> {
 	 */
 	public void setExtendsType(String extendsType) {
 		this.extendsType = extendsType;
+	}
+
+	public Stereotype getStereotype() {
+		return stereotype;
+	}
+
+	public void setStereotype(Stereotype stereotype) {
+		this.stereotype = stereotype;
 	}
 }

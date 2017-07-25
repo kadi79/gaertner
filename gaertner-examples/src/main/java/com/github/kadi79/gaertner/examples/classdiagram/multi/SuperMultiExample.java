@@ -1,5 +1,6 @@
 package com.github.kadi79.gaertner.examples.classdiagram.multi;
 
+import com.github.kadi79.gaertner.annotations.Stereotype;
 import com.github.kadi79.gaertner.annotations.UmlClassDiagram;
 
 /**
@@ -7,7 +8,7 @@ import com.github.kadi79.gaertner.annotations.UmlClassDiagram;
  *
  * @since 0.0.1
  */
-@UmlClassDiagram(filename="doc-files/MultiPackage")
+@UmlClassDiagram(filename="doc-files/MultiPackage", stereotype=@Stereotype(type="Supertype", highlightChar='S', highlightColor="#ff0000"))
 public class SuperMultiExample {
 
 }
